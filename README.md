@@ -15,6 +15,12 @@ location of the Arm GNU Toolchain on your system.
 The build produces `build/DemoRTOSProject.elf` and
 `build/DemoRTOSProject.bin`.
 
+To build the project and run all unit-test:
+```bash
+./scripts/build.sh -dceAG
+```
+
+
 ## Flash with an ST-Link V2
 
 ### Requirements
@@ -108,6 +114,10 @@ raw binary does not contain its destination address.
 
 ARM cross compiler e.g. arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
 
+The toolchain can be downloaded from:
+```
+https://developer.arm.com/tools-and-software/gnu-toolchain
+```
 cmake version 3.20 or later
 
 
