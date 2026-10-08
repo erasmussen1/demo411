@@ -7,7 +7,7 @@
 
 
 #define SCB_CPACR (*(volatile uint32_t*)(0xE000ED88UL))
-#define SCB_VTOR  (*(volatile uint32_t*)(0xE000ED08UL))
+#define SCB_VTOR (*(volatile uint32_t*)(0xE000ED08UL))
 
 extern const uint32_t g_pfnVectors[];
 

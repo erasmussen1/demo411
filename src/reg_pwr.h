@@ -5,10 +5,9 @@
 #include <stdint.h>
 
 
-typedef struct {	    			//  Offset	// Description
-	volatile uint32_t cr;	    	//	0x00
-	volatile uint32_t csr;	    	//	0x04
+typedef struct {            //  Offset	// Description
+    volatile uint32_t cr;   //	0x00
+    volatile uint32_t csr;  //	0x04
 } PWR_TypeDef;
 
-#define PWR         ((PWR_TypeDef *) PWR_BASE)
-
+#define PWR ((PWR_TypeDef*)PWR_BASE)

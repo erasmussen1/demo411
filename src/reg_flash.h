@@ -8,5 +8,4 @@ typedef struct {
     volatile uint32_t acr;
 } FLASH_TypeDef;
 
-#define FLASH         ((FLASH_TypeDef *) FLASH_BASE)
-
+#define FLASH ((FLASH_TypeDef*)FLASH_BASE)
