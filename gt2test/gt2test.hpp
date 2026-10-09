@@ -6,18 +6,21 @@
 #include <functional>
 #include <type_traits>
 #include <iostream>
+#include <iomanip>
 
 
-#define RED "\033[1;31m"
-#define GREEN "\033[0;32m"
-#define YELLOW "\033[0;33m"
-#define DEF "\033[0;0m"
+/* clang-format off */
+#define RED         "\033[1;31m"
+#define GREEN       "\033[0;32m"
+#define YELLOW      "\033[0;33m"
+#define DEF         "\033[0;0m"
 
-#define INFO_PREFIX YELLOW "[    INFO] " DEF
-#define RUN_PREFIX GREEN "[RUN     ] " DEF
-#define OK_PREFIX GREEN "[      OK] " DEF
-#define FAILED_PREFIX RED "[  FAILED] " DEF
+#define INFO_PREFIX YELLOW    "[    INFO] " DEF
+#define RUN_PREFIX GREEN      "[RUN     ] " DEF
+#define OK_PREFIX GREEN       "[      OK] " DEF
+#define FAILED_PREFIX RED     "[  FAILED] " DEF
 
+/* clang-format on */
 
 #define ASSERT(cond)       \
     if (!(cond)) {         \
@@ -33,19 +36,39 @@
 #define ASSERT_NULL(value) ASSERT(value == nullptr);
 #define ASSERT_NOTNULL(value) ASSERT(value != nullptr);
 
-#define ASSERT_EQ(a, b)                                                         \
-    if (!(a == b)) {                                                            \
-        std::cout << INFO_PREFIX "Actual values: " << a << " == " << b << "\n"; \
-    }                                                                           \
-    ASSERT(a == b);
+template <typename T, typename U>
+auto printMsg(const std::string&& msg,  //
+              const T& t,               //
+              const std::string&& opr,  //
+              const U& u                //
+              ) -> void {
+    std::cout << msg << t << " " << opr << " " << u << "\n";
+}
 
-#define ASSERT_NE(a, b)                                                         \
-    if (!(a != b)) {                                                            \
-        std::cout << INFO_PREFIX "Actual values: " << a << " != " << b << "\n"; \
-    }                                                                           \
-    ASSERT(a != b);
+template <typename TV, typename UV>
+auto printMsg(const std::string&& msg,    //
+              const std::vector<TV>& tv,  //
+              const std::string&& opr,    //
+              const std::vector<UV>& uv   //
+              ) -> void {
+    /* TODO(ER) - create function to print container */
+    std::cout << msg << "vector A" << " " << opr << " " << "vector B" << "\n";
+}
 
-#define ASSERT_NEAR(a, b, e) ASSERT(std::fabs(a - b) < e);
+
+#define ASSERT_EQ(a, b)                                      \
+    if (!((a) == (b))) {                                     \
+        printMsg(INFO_PREFIX "Actual values: ", a, "==", b); \
+    }                                                        \
+    ASSERT((a) == (b));
+
+#define ASSERT_NE(a, b)                                      \
+    if (!((a) != (b))) {                                     \
+        printMsg(INFO_PREFIX "Actual values: ", a, "!=", b); \
+    }                                                        \
+    ASSERT((a) != (b));
+
+#define ASSERT_NEAR(a, b, e) ASSERT(std::fabs((a) - (b)) < e);
 
 #define EXPECT_TRUE(cond) ASSERT(cond)
 #define EXPECT_FALSE(cond) ASSERT(!(cond))
@@ -53,17 +76,17 @@
 #define EXPECT_NULL(value) ASSERT(value == nullptr);
 #define EXPECT_NOTNULL(value) ASSERT(value != nullptr);
 
-#define EXPECT_EQ(a, b) ASSERT_EQ(a, b);
-#define EXPECT_NE(a, b) ASSERT_NE(a, b);
+#define EXPECT_EQ(a, b) ASSERT_EQ((a), (b));
+#define EXPECT_NE(a, b) ASSERT_NE((a), (b));
 
-#define EXPECT_NEAR(a, b, e) ASSERT_NEAR(a, b, e);
+#define EXPECT_NEAR(a, b, e) ASSERT_NEAR((a), (b), (e));
 
 
 #define TEST(suite, name)                               \
     void name(bool&, std::string&, std::string&, int&); \
                                                         \
     namespace {                                         \
-    bool name##flag = gt2::addTest1(name, #name);         \
+    bool name##flag = gt2::addTest1(name, #name);       \
     }                                                   \
                                                         \
     void name(bool& success, std::string& condition, std::string& file, int& line)
@@ -107,13 +130,16 @@ struct Test {
 
     virtual void body(bool& success, std::string& condition, std::string& file, int& line) = 0;
 
-    virtual void setUp() {}
+    virtual void SetUp() {
+    }
 
-    virtual void tearDown() {}
+    virtual void TearDown() {
+    }
 };
 
 struct Test2 {
-    Test2(const std::string& name_, Test* p_) : name(name_), p(p_) {}
+    Test2(const std::string& name_, Test* p_) : name(name_), p(p_) {
+    }
     std::string name;
     Test* p{nullptr};
 };
@@ -168,9 +194,9 @@ inline static size_t runAllTests() {
         success = true;
 
         printPrefix(test.name);
-        test.p->setUp();
+        test.p->SetUp();
         test.p->body(success, condition, filename, line);
-        test.p->tearDown();
+        test.p->TearDown();
         printResults(test.name, success, condition, filename, line, numberOfFailedTests);
 
         delete test.p;
