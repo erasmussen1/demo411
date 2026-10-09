@@ -13,11 +13,11 @@ constexpr size_t COMMAND_BUFFER_SIZE = 30;
 
 
 struct UtilMenuFixture : public gt2::Test {
-    void setUp() {
+    void SetUp() {
         //
     }
 
-    void tearDown(void) {
+    void TearDown(void) {
         //
     }
 

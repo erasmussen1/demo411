@@ -144,7 +144,7 @@ static void runPinSequence(void) {
     writePin(6U, true);
     writePin(7U, true);
 
-    vTaskDelay(pdMS_TO_TICKS(900U));
+    vTaskDelay(pdMS_TO_TICKS(1500U));
 
     writePin(6U, false);
     writePin(7U, false);
@@ -155,7 +155,7 @@ static void example0Task(void* parameters) {
 
     bool toggle = false;
     for (;;) {
-        vTaskDelay(pdMS_TO_TICKS(1500));  // 1.5 sec
+        vTaskDelay(pdMS_TO_TICKS(1300));  // 1.3 sec
         writePin(6U, toggle);
 
         toggle = (toggle) ? false : true;

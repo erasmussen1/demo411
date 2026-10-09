@@ -9,10 +9,11 @@
 
 
 struct UtilsFixture : public gt2::Test {
-    void setUp() {
+    void SetUp() override {
+        //
     }
 
-    void tearDown(void) {
+    void TearDown(void) override {
         //
     }
 
